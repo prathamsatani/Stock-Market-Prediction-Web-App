@@ -48,7 +48,7 @@ class Prediction:
         # model.add(Dense(25))
         # model.add(Dense(1))
         # return model
-        return keras.models.load_model("StockMarketPredictor.keras")
+        return keras.models.load_model("Stock-Market-Prediction-Web-App/StockMarketPredictor.keras")
     
     def createDataset(self):
         self.df = self.stock
