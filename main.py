@@ -44,6 +44,6 @@ with st.spinner("Please Wait..."):
     st.header("Predictions...")
     st.subheader("Based on historical data ")
 with st.spinner("Please Wait..."):
-    prediction.predictPrices()
+    #prediction.predictPrices()
     prediction.testPredictionModel()
     prediction.plotPredictedPrices()
