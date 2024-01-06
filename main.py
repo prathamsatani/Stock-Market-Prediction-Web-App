@@ -1,4 +1,3 @@
-from Tweets import Tweets
 from Prediction import Prediction
 import streamlit as st
 import pandas as pd
