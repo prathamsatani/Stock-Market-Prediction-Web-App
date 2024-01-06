@@ -10,7 +10,7 @@ st.title("Welcome to :blue[Stock Price Predictor] Web App!")
 
 stock = st.text_input("Enter stock symbol: ")
 with st.spinner("Please Wait..."):
-    prediction.fetchData(stock, "10y")
+    prediction.fetchData(stock, "max")
 
     st.header(f"OHLC Graphs of {stock}")
     graph = st.radio(
