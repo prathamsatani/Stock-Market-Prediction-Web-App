@@ -1,9 +1,7 @@
 import pandas as pd
 import yfinance as yf
 import numpy as np
-import plotly as pl
 import streamlit as st
-import tensorflow as tf
 from keras.models import Sequential
 from keras.layers import Dense, LSTM
 from sklearn.preprocessing import MinMaxScaler
