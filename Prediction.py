@@ -107,17 +107,3 @@ class Prediction:
         valid['Predictions'] = self.predictions
         dict = {"train": train["Close"], "validation":valid["Close"], "prediction":valid["Predictions"]}
         st.line_chart(dict, color=["#0000FF", "#FFFF00", "#00FF00"])
-
-
-
-
-
-
-
-
-
-
-
-P1 = Prediction()
-P1.fetchData("IOC.NS", "10y")
-P1.createDataset()
