@@ -5,6 +5,7 @@ import streamlit as st
 from keras.models import Sequential
 from keras.layers import Dense, LSTM
 from sklearn.preprocessing import MinMaxScaler
+import keras
 
 class Prediction:
     def __init__(self) -> None:
@@ -40,13 +41,14 @@ class Prediction:
         
         st.line_chart(dict, color=["#FF0000", "#FFFF00", "#00FF00"])
 
-    def predictionModel(self, shape):
-        model = Sequential()
-        model.add(LSTM(128, return_sequences=True, input_shape=shape))
-        model.add(LSTM(64, return_sequences=False))
-        model.add(Dense(25))
-        model.add(Dense(1))
-        return model
+    def predictionModel(self):
+        # model = Sequential()
+        # model.add(LSTM(128, return_sequences=True, input_shape=shape))
+        # model.add(LSTM(64, return_sequences=False))
+        # model.add(Dense(25))
+        # model.add(Dense(1))
+        # return model
+        return keras.models.load_model("StockMarketPredictor.keras")
     
     def createDataset(self):
         self.df = self.stock
@@ -55,35 +57,39 @@ class Prediction:
         self.training_data_len = int(np.ceil( len(self.dataset) * .95 ))
         return self.dataset
     
-    def predictPrices(self):
+    # def predictPrices(self):
+    #     self.createDataset()
+    #     self.scaler = MinMaxScaler(feature_range=(0,1))
+    #     self.scaled_data = self.scaler.fit_transform(self.dataset)
+    #     training_data_len = int(np.ceil( len(self.dataset) * .95 ))
+
+    #     train_data = self.scaled_data[0:int(training_data_len), :]
+
+    #     x_train = []
+    #     y_train = []
+
+    #     for i in range(60, len(train_data)):
+    #         x_train.append(train_data[i-60:i, 0])
+    #         y_train.append(train_data[i, 0])
+    #         if i<= 61:
+    #             print(x_train)
+    #             print(y_train)
+    #             print()
+
+    #     x_train, y_train = np.array(x_train), np.array(y_train)
+    #     x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
+
+    #     self.model = self.predictionModel((x_train.shape[1], 1))
+
+    #     self.model.compile(optimizer='adam', loss='mean_squared_error', metrics="accuracy")
+
+    #     self.model.fit(x_train, y_train, batch_size=1, epochs=1)
+
+    def testPredictionModel(self):
         self.createDataset()
         self.scaler = MinMaxScaler(feature_range=(0,1))
         self.scaled_data = self.scaler.fit_transform(self.dataset)
         training_data_len = int(np.ceil( len(self.dataset) * .95 ))
-
-        train_data = self.scaled_data[0:int(training_data_len), :]
-
-        x_train = []
-        y_train = []
-
-        for i in range(60, len(train_data)):
-            x_train.append(train_data[i-60:i, 0])
-            y_train.append(train_data[i, 0])
-            if i<= 61:
-                print(x_train)
-                print(y_train)
-                print()
-
-        x_train, y_train = np.array(x_train), np.array(y_train)
-        x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
-
-        self.model = self.predictionModel((x_train.shape[1], 1))
-
-        self.model.compile(optimizer='adam', loss='mean_squared_error', metrics="accuracy")
-
-        self.model.fit(x_train, y_train, batch_size=1, epochs=1)
-
-    def testPredictionModel(self):
         test_data = self.scaled_data[self.training_data_len - 60: , :]
         x_test = []
         y_test = self.dataset[self.training_data_len:, :]
@@ -93,7 +99,7 @@ class Prediction:
         x_test = np.array(x_test)
 
         x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1], 1 ))
-
+        self.model = self.predictionModel()
         self.predictions = self.model.predict(x_test)
         self.predictions = self.scaler.inverse_transform(self.predictions)
 
@@ -105,3 +111,4 @@ class Prediction:
         valid['Predictions'] = self.predictions
         dict = {"train": train["Close"], "validation":valid["Close"], "prediction":valid["Predictions"]}
         st.line_chart(dict, color=["#0000FF", "#FFFF00", "#00FF00"])
+        
