@@ -86,7 +86,7 @@ class Prediction:
     #     self.model.fit(x_train, y_train, batch_size=1, epochs=1)
 
     def testPredictionModel(self):
-        self.createDataset()
+        self.dataset = self.createDataset()
         self.scaler = MinMaxScaler(feature_range=(0,1))
         self.scaled_data = self.scaler.fit_transform(self.dataset)
         training_data_len = int(np.ceil( len(self.dataset) * .95 ))
